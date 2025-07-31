@@ -18,10 +18,13 @@ app.post('/slack/command', async (req, res) => {
 
   try {
     const completion = await axios.post(
-      'https://api.openai.com/v1/completions',
+      'https://api.openai.com/v1/chat/completions',
       {
-        model: "text-davinci-003",
-        prompt: prompt,
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "You are a helpful assistant that writes professional LinkedIn posts." },
+          { role: "user", content: prompt }
+        ],
         max_tokens: 150
       },
       {
@@ -31,7 +34,9 @@ app.post('/slack/command', async (req, res) => {
       }
     );
 
-    const message = completion.data.choices[0].text.trim();
+
+    const message = completion.data.choices[0].message.content.trim();
+
 
     await axios.post(responseUrl, {
       response_type: "in_channel",
