@@ -11,7 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 // Gemini setup
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+const model = genAI.getGenerativeModel({ model: 'gemini-pro-1.0' });
+
 
 app.post('/slack/command', async (req, res) => {
   const userText = req.body.text;
