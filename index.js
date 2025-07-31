@@ -40,9 +40,13 @@ app.post('/slack/command', async (req, res) => {
     });
 
   } catch (error) {
-    await axios.post(responseUrl, {
-      response_type: "ephemeral",
-      text: "⚠️ Something went wrong while writing your post."
+        console.error("OpenAI Error:", error.response?.data || error.message);
+        await axios.post(responseUrl, {
+          response_type: "ephemeral",
+          text: `⚠️ GPT failed: ${error.response?.data?.error?.message || "Unknown error."}`
+        });
+      }
+
     });
   }
 });
