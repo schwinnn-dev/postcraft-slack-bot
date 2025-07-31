@@ -12,7 +12,6 @@ app.post('/slack/command', async (req, res) => {
   const userText = req.body.text;
   const responseUrl = req.body.response_url;
 
-  // Step 1: Immediately reply to Slack
   res.status(200).send("✍️ Crafting your LinkedIn post...");
 
   const prompt = `Write a professional LinkedIn post for: "${userText}"`;
@@ -40,13 +39,10 @@ app.post('/slack/command', async (req, res) => {
     });
 
   } catch (error) {
-        console.error("OpenAI Error:", error.response?.data || error.message);
-        await axios.post(responseUrl, {
-          response_type: "ephemeral",
-          text: `⚠️ GPT failed: ${error.response?.data?.error?.message || "Unknown error."}`
-        });
-      }
-
+    console.error("OpenAI Error:", error.response?.data || error.message);
+    await axios.post(responseUrl, {
+      response_type: "ephemeral",
+      text: `⚠️ GPT failed: ${error.response?.data?.error?.message || error.message}`
     });
   }
 });
